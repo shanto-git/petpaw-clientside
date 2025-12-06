@@ -6,6 +6,7 @@ import Register from "../login&registration/Register";
 import Login from "../login&registration/Login";
 import MultiLogin from "../login&registration/MultiLogin";
 import Pets from "../../pages/Pets";
+import Profile from "../../pages/Profile";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
         path: "/register",
         element: <Register />,
       },
+      {
+        path:"/profile",
+        element: <Profile/>
+      }
     ],
   },
 ]);
