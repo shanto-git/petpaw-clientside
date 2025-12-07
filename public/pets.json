@@ -1,0 +1,132 @@
+[
+  {
+    "name": "Golden Retriever Puppy",
+    "category": "Pets (Adoption)",
+    "price": 0,
+    "location": "Dhaka",
+    "description": "Friendly 2-month-old puppy available for adoption.",
+    "image": "https://i.ibb.co/golden.jpg",
+    "email": "owner1@gmail.com",
+    "date": "2025-10-27"
+  },
+  {
+    "name": "Persian Cat",
+    "category": "Pets (Adoption)",
+    "price": 5000,
+    "location": "Chattogram",
+    "description": "Pure Persian cat, vaccinated and healthy.",
+    "image": "https://i.ibb.co/persian.jpg",
+    "email": "owner2@gmail.com",
+    "date": "2025-11-01"
+  },
+  {
+    "name": "Dog Food (2kg)",
+    "category": "Pet Food",
+    "price": 1200,
+    "location": "Dhaka",
+    "description": "Premium chicken-flavor dog food, fresh pack.",
+    "image": "https://i.ibb.co/dogfood.jpg",
+    "email": "shop1@gmail.com",
+    "date": "2025-12-05"
+  },
+  {
+    "name": "Cat Food (1kg)",
+    "category": "Pet Food",
+    "price": 900,
+    "location": "Sylhet",
+    "description": "Nutritious cat food for kittens and adults.",
+    "image": "https://i.ibb.co/catfood.jpg",
+    "email": "shop2@gmail.com",
+    "date": "2025-11-20"
+  },
+  {
+    "name": "Bird Cage (Medium)",
+    "category": "Accessories",
+    "price": 1800,
+    "location": "Dhaka",
+    "description": "Durable medium-sized bird cage with feeder.",
+    "image": "https://i.ibb.co/birdcage.jpg",
+    "email": "seller1@gmail.com",
+    "date": "2025-10-30"
+  },
+  {
+    "name": "Dog Leash (Leather)",
+    "category": "Accessories",
+    "price": 750,
+    "location": "Sylhet",
+    "description": "Brown leather leash, durable and stylish.",
+    "image": "https://i.ibb.co/leash.jpg",
+    "email": "seller2@gmail.com",
+    "date": "2025-10-25"
+  },
+  {
+    "name": "Pet Shampoo (500ml)",
+    "category": "Pet Care Products",
+    "price": 450,
+    "location": "Dhaka",
+    "description": "Anti-flea organic shampoo for dogs & cats.",
+    "image": "https://i.ibb.co/shampoo.jpg",
+    "email": "care1@gmail.com",
+    "date": "2025-11-26"
+  },
+  {
+    "name": "Cat Litter (10kg)",
+    "category": "Pet Care Products",
+    "price": 900,
+    "location": "Chattogram",
+    "description": "Dust-free clumping litter, large pack.",
+    "image": "https://i.ibb.co/litter.jpg",
+    "email": "care2@gmail.com",
+    "date": "2025-12-08"
+  },
+  {
+    "name": "Rabbit (White)",
+    "category": "Pets (Adoption)",
+    "price": 900,
+    "location": "Rajshahi",
+    "description": "Healthy white rabbit, 4 months old.",
+    "image": "https://i.ibb.co/rabbit.jpg",
+    "email": "owner3@gmail.com",
+    "date": "2025-11-12"
+  },
+  {
+    "name": "Hamster Set",
+    "category": "Pets (Adoption)",
+    "price": 600,
+    "location": "Dhaka",
+    "description": "Small golden hamster with cage included.",
+    "image": "https://i.ibb.co/hamster.jpg",
+    "email": "owner4@gmail.com",
+    "date": "2025-12-01"
+  },
+  {
+    "name": "Dog Bed (Large)",
+    "category": "Accessories",
+    "price": 2000,
+    "location": "Rajshahi",
+    "description": "Soft and comfortable bed suitable for all large dogs.",
+    "image": "https://i.ibb.co/dogbed.jpg",
+    "email": "seller3@gmail.com",
+    "date": "2025-11-18"
+  },
+  {
+    "name": "Exotic Turtle",
+    "category": "Pets (Adoption)",
+    "price": 2500,
+    "location": "Chattogram",
+    "description": "Small exotic turtle, easy to maintain.",
+    "image": "https://i.ibb.co/turtle.jpg",
+    "email": "turtlestore@gmail.com",
+    "date": "2025-10-29"
+  },
+  {
+    "name": "Aquarium Starter Kit",
+    "category": "Accessories",
+    "price": 3200,
+    "location": "Khulna",
+    "description": "10L tank with filter, light, and accessories.",
+    "image": "https://i.ibb.co/aquarium.jpg",
+    "email": "fishstore@gmail.com",
+    "date": "2025-11-22"
+  }
+]
