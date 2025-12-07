@@ -9,6 +9,7 @@ import Pets from "../../pages/Pets";
 import Profile from "../../pages/Profile";
 import AddListing from "../../pages/AddListing";
 import MyListing from "../../pages/MyListing";
+import Details from "../cardDeteils/Details";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
         path:"/my-listings",
         element: <MyListing/>
       },
+      {
+        path: "/listing/:id",
+        element: <Details/>
+      }
     ],
   },
 ]);

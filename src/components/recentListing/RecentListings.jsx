@@ -3,33 +3,25 @@ import { Link } from "react-router-dom";
 
 const RecentListings = () => {
   const [listings, setListings] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/pets.json")
+    fetch("http://localhost:3000/listing")
       .then((res) => res.json())
       .then((data) => {
-        const newData = data.slice(-6);
+        const newData = data
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .slice(0, 6);
         setListings(newData);
-        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching listings:", error);
-        setLoading(false);
       });
   }, []);
 
-  if (loading) {
-    return (
-      <p className="text-center py-16 text-lg">
-        <span className="loading loading-spinner loading-xs"></span>Loading
-        recent listings...
-      </p>
-    );
-  }
+
 
   return (
-    <div className="py-12 px-4 md:px-10 lg:px-20 bg-gray-50">
+    <div className="py-12 px-4 md:px-10 lg:px-20">
       <h2 className="text-3xl underline md:text-4xl font-bold text-center mb-8">
         Recent Listings
       </h2>
