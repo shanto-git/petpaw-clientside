@@ -10,6 +10,7 @@ import Profile from "../../pages/Profile";
 import AddListing from "../../pages/AddListing";
 import MyListing from "../../pages/MyListing";
 import Details from "../cardDeteils/Details";
+import CategoryListings from "../category/CategoryListing";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path:"/pets",
         element:<Pets/>
+      },
+      {
+        path:"/category/:category",
+        element:<CategoryListings/>
       },
       {
         path: "/chooseLogin",

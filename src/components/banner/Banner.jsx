@@ -74,7 +74,7 @@ const Banner = () => {
           </motion.div>
           <Link to="/pets">
           <button className="mt-4 btn btn-secondary hover:text-black md:btn-md">
-              Explore Pets<AiOutlineDoubleRight />
+              Explore Now<AiOutlineDoubleRight />
             </button></Link>
           </div>
           <motion.div
