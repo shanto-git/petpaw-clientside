@@ -7,6 +7,8 @@ import Login from "../login&registration/Login";
 import MultiLogin from "../login&registration/MultiLogin";
 import Pets from "../../pages/Pets";
 import Profile from "../../pages/Profile";
+import AddListing from "../../pages/AddListing";
+import MyListing from "../../pages/MyListing";
 
 const router = createBrowserRouter([
   {
@@ -36,7 +38,15 @@ const router = createBrowserRouter([
       {
         path:"/profile",
         element: <Profile/>
-      }
+      },
+      {
+        path:"/add-listing",
+        element: <AddListing/>
+      },
+      {
+        path:"/my-listings",
+        element: <MyListing/>
+      },
     ],
   },
 ]);

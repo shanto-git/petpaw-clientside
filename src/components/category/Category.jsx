@@ -26,19 +26,19 @@ const categories = [
 
 const Category = () => {
   return (
-    <div className="py-10 bg-gray-50">
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-6">
+    <div className="py-10">
+      <h2 className="text-2xl underline md:text-3xl font-bold text-center mb-6">
         Explore Categories
       </h2>
       <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 px-4">
-        {categories.map((cat, idx) => (
+        {categories.map((pet, idx) => (
           <div
             key={idx}
-            className={`flex flex-col items-center justify-center p-6 rounded-lg shadow-md hover:shadow-xl transition cursor-pointer ${cat.bg}`}
+            className={`flex flex-col items-center justify-center p-6 rounded-lg shadow-md hover:shadow-xl hover:bg-white transition cursor-pointer ${pet.bg}`}
           >
-            <div className="mb-3">{cat.icon}</div>
+            <div className="mb-3">{pet.icon}</div>
             <h3 className="text-lg font-semibold text-gray-800 text-center">
-              {cat.name}
+              {pet.name}
             </h3>
           </div>
         ))}
