@@ -1,8 +1,9 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../provider/AuthProvider";
-import { IoIosPaw } from "react-icons/io";
+import { IoIosMoon, IoIosPaw } from "react-icons/io";
 import { FaSearch } from "react-icons/fa";
+import { WiDaySunny, WiMoonAltWaningCrescent6 } from "react-icons/wi";
 
 const Navbar = () => {
   const { user } = useContext(AuthContext);
@@ -10,9 +11,9 @@ const Navbar = () => {
   const [userName, setUserName] = useState(false);
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef(null);
+  const [theme, setTheme] = useState("light");
 
   const handleProfile = () => navigate("/profile");
-
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -22,6 +23,21 @@ const Navbar = () => {
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    document.querySelector("html").setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+  };
+
+  useEffect(() => {
+    const saved = localStorage.getItem("theme") || "light";
+    setTheme(saved);
+    document.querySelector("html").setAttribute("data-theme", saved);
   }, []);
   return (
     <div>
@@ -177,22 +193,29 @@ const Navbar = () => {
               Login
             </Link>
           ) : (
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center">
+              <button
+      onClick={toggleTheme}
+      className="text-xl"
+    >
+      {theme === "light" ? <WiMoonAltWaningCrescent6 />: <WiDaySunny />}
+    </button>
               <div ref={wrapperRef} className="relative flex items-center">
-      <FaSearch
-        className="cursor-pointer text-gray-700"
-        onClick={() => setOpen(true)}
-      />
-      <input
-        type="text"
-        placeholder="Search..."
-        className={`
+                <FaSearch
+                  className="cursor-pointer text-gray-700"
+                  onClick={() => setOpen(true)}
+                />
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  className={`
           border rounded-lg transition-all duration-300
           ${open ? "w-48 opacity-100 p-1" : "w-0 opacity-0 p-0 border-none"}
           focus:outline-none
         `}
-      />
-    </div>
+                />
+              </div>
+              
               <div
                 className="relative cursor-pointer"
                 onMouseEnter={() => setUserName(true)}
