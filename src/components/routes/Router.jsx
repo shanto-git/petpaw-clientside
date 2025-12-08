@@ -13,6 +13,7 @@ import Details from "../cardDeteils/Details";
 import CategoryListings from "../category/CategoryListing";
 import UpdateListing from "../update/UpdateListing";
 import MyOrders from "../../pages/MyOrders";
+import NotFound from "../error/NotFound";
 
 const router = createBrowserRouter([
   {
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path:"*",
+    element: <NotFound/>
+  }
 ]);
 
 export default router;
