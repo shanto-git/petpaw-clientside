@@ -2,12 +2,12 @@ import React, { useContext, useState } from "react";
 import { AuthContext } from "../provider/AuthProvider";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 const AddListing = () => {
   const { user } = useContext(AuthContext);
   const [category, setCategory] = useState("");
-    const navigate = useNavigate();
-
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,14 +32,33 @@ const AddListing = () => {
       email,
     };
     console.log(formData);
-    axios.post('http://localhost:3000/listing', formData)
-    .then(res=>{
-        console.log(res)
-        navigate('/my-listings')
-    })
+    axios.post("http://localhost:3000/listing", formData).then((res) => {
+      console.log(res);
+      if (res.data.acknowledged) {
+        Swal.fire({
+          title: "Add Listing Successfully",
+          icon: "success",
+          draggable: true,
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        }).catch((err) => {
+          console.log(err);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong!",
+          });
+        });
+      }
+      navigate("/my-listings");
+    });
   };
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-xl">
+    <div className="max-w-2xl mx-auto p-6 shadow-lg rounded-xl">
       <h2 className="text-3xl font-bold text-center mb-6">Add New Listing</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -128,7 +147,7 @@ const AddListing = () => {
             name="email"
             readOnly
             value={user?.email}
-            className="input input-bordered w-full bg-gray-100"
+            className="input input-bordered w-full"
           />
         </div>
         <button className="btn btn-secondary w-full text-white mt-4">

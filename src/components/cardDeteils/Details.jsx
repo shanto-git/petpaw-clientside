@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { AuthContext } from "../../provider/AuthProvider";
 import toast from "react-hot-toast";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const Details = () => {
   const { id } = useParams();
@@ -24,7 +25,6 @@ const Details = () => {
       });
   }, [id]);
 
-  // ✅ FIXED — Handle Order
   const handleOrder = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -45,21 +45,29 @@ const Details = () => {
     axios
       .post("http://localhost:3000/orders", formData)
       .then((res) => {
-        toast.success("Order placed successfully!");
+        Swal.fire({
+          title: "Drag me!",
+          icon: "success",
+          draggable: true,
+        });
         setIsModalOpen(false);
       })
       .catch((err) => console.log(err));
   };
 
   if (loading)
-    return <p className="text-center py-10 text-lg">Loading...</p>;
+    return (
+      <p className=" flex flex-col items-center text-center py-10 text-lg">
+        Loading...<progress className="progress w-56"></progress>
+      </p>
+    );
 
   if (!listing)
-    return <p className="text-center py-10 text-red-500">Listing not found.</p>;
+    return <p className="text-center py-10">Listing not found.</p>;
 
   return (
     <div className="p-5">
-      <div className="flex justify-start items-center gap-5 mx-auto bg-white">
+      <div className="flex justify-start items-center gap-5 mx-auto">
         <img
           src={listing.image}
           alt={listing.name}
@@ -71,19 +79,24 @@ const Details = () => {
 
           <div className="flex justify-between items-center">
             <p className="mt-2 font-semibold">
-              {listing.category == "Pets" ? "Free for Adoption" : `Price: $${listing.price}`}
+              {listing.category == "Pets"
+                ? "Free for Adoption"
+                : `Price: $${listing.price}`}
             </p>
             <p className="mt-2">
-              <span className="font-semibold">Category:</span> {listing.category}
+              <span className="font-semibold">Category:</span>{" "}
+              {listing.category}
             </p>
           </div>
 
           <div className="flex justify-between items-center gap-10">
             <p className="mt-1">
-              <span className="font-semibold">Owner Email:</span> {listing.email}
+              <span className="font-semibold">Owner Email:</span>{" "}
+              {listing.email}
             </p>
             <p className="mt-1">
-              <span className="font-semibold">Location:</span> {listing.location}
+              <span className="font-semibold">Location:</span>{" "}
+              {listing.location}
             </p>
           </div>
 
@@ -99,7 +112,9 @@ const Details = () => {
         {isModalOpen && (
           <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm">
             <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-5">
-              <h2 className="text-2xl text-center font-bold mb-3">Place Your Order</h2>
+              <h2 className="text-2xl text-center font-bold mb-3">
+                Place Your Order
+              </h2>
 
               <form onSubmit={handleOrder} className="space-y-3">
                 <input
@@ -196,7 +211,7 @@ const Details = () => {
         )}
       </div>
 
-      <p className="mt-4 text-gray-700">
+      <p className="mt-4">
         <span className="font-semibold underline block mb-1">Description:</span>
         {listing.description}
       </p>

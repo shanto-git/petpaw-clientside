@@ -62,7 +62,7 @@ const Pets = () => {
           {filteredListings.map((item) => (
             <div
               key={item._id}
-              className="bg-white shadow-lg rounded-lg overflow-hidden"
+              className=" shadow-lg rounded-lg overflow-hidden"
             >
               <img
                 src={item.image}
@@ -71,7 +71,7 @@ const Pets = () => {
               />
               <div className="p-4">
                 <h3 className="font-bold text-xl">{item.name}</h3>
-                <p className="text-gray-800 mt-2 font-semibold">
+                <p className="text-gray-600 mt-2 font-semibold">
                   {item.category === "Pets" 
                     ? "Free for Adoption"
                     : `Price: $${item.price}`}

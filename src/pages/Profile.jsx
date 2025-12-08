@@ -51,7 +51,7 @@ const UserProfile = () => {
 
 
   return (
-    <div className="max-w-lg mx-auto p-6 my-20 bg-white shadow-lg rounded-2xl">
+    <div className="max-w-lg mx-auto p-6 my-20 shadow-lg rounded-2xl">
       <Toaster position="top-center" />
       <div className="flex justify-between">
         <button onClick={() => navigate(-1)} className="btn btn-dash btn-accent mb-4 hover:underline">
