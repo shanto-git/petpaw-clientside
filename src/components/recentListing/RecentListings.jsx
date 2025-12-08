@@ -39,20 +39,19 @@ const RecentListings = () => {
 
             <div className="p-4">
               <h3 className="font-bold text-xl">{item.name}</h3>
-
               <p className="text-gray-600 mt-1">
-                <span className="font-semibold">Category:</span> {item.category}
-              </p>
-
-              <div className="flex justify-between">
-                <p className="text-gray-600 mt-1">
                   {item.category === "Pets (Adoption)" ? (
                     <span className="font-bold">Free for Adoption</span>
                   ) : (
                     <span className="font-semibold">Price: ${item.price}</span>
                   )}
                 </p>
+              
 
+              <div className="flex justify-between"> 
+                  <p className="text-gray-600 mt-1">
+                <span className="font-semibold">Category:</span> {item.category}
+              </p>
                 <p className="text-gray-600 mt-1 mb-3">
                   <span className="font-semibold">Location:</span>{" "}
                   {item.location}

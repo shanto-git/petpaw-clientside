@@ -3,7 +3,7 @@ import { FaDog, FaBone, FaShoppingBag, FaMedkit } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const categories = [
-  { name: "Pets(Adoption)", icon: <FaDog size={30} />, bg: "bg-yellow-200" },
+  { name: "Pets", icon: <FaDog size={30} />, bg: "bg-yellow-200" },
   { name: "Food", icon: <FaBone size={30} />, bg: "bg-green-200" },
   { name: "Accessories", icon: <FaShoppingBag size={30} />, bg: "bg-pink-200" },
   { name: "Care Products", icon: <FaMedkit size={30} />, bg: "bg-blue-200" },
@@ -22,9 +22,9 @@ const Category = () => {
         Explore Categories
       </h2>
       <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 px-4">
-        {categories.map((cat, idx) => (
+        {categories.map((cat, id) => (
           <div
-            key={idx}
+            key={id}
             onClick={() => handleCategoryClick(cat.name)}
             className={`flex flex-col items-center justify-center p-6 rounded-lg shadow-md hover:shadow-xl hover:bg-white transition cursor-pointer ${cat.bg}`}
           >

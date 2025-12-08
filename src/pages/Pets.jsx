@@ -71,17 +71,19 @@ const Pets = () => {
               />
               <div className="p-4">
                 <h3 className="font-bold text-xl">{item.name}</h3>
+                <p className="text-gray-800 mt-2 font-semibold">
+                  {item.category === "Pets" 
+                    ? "Free for Adoption"
+                    : `Price: $${item.price}`}
+                </p>
+                <div className="flex justify-between items-center">   
                 <p className="text-gray-600 mt-1">
                   <span className="font-semibold">Category:</span> {item.category}
                 </p>
                 <p className="text-gray-600 mt-1">
                   <span className="font-semibold">Location:</span> {item.location}
                 </p>
-                <p className="text-gray-800 mt-2 font-semibold">
-                  {item.price === 0 || item.price === "0"
-                    ? "Free for Adoption"
-                    : `$${item.price}`}
-                </p>
+                </div>
                 <Link
                   to={`/listing/${item._id}`}
                   className="btn btn-secondary w-full mt-3 text-white"

@@ -11,6 +11,8 @@ import AddListing from "../../pages/AddListing";
 import MyListing from "../../pages/MyListing";
 import Details from "../cardDeteils/Details";
 import CategoryListings from "../category/CategoryListing";
+import UpdateListing from "../update/UpdateListing";
+import MyOrders from "../../pages/MyOrders";
 
 const router = createBrowserRouter([
   {
@@ -56,7 +58,15 @@ const router = createBrowserRouter([
       {
         path: "/listing/:id",
         element: <Details/>
-      }
+      },
+      {
+        path: "/updatelist/:id",
+        element: <UpdateListing/>
+      },
+      {
+        path: "/my-orders",
+        element: <MyOrders/>
+      },
     ],
   },
 ]);

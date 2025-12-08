@@ -1,15 +1,23 @@
-import React, { useContext, useState } from "react";
-import { AuthContext } from "../provider/AuthProvider";
+import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../provider/AuthProvider";
 import axios from "axios";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
-const AddListing = () => {
+const UpdateListing = () => {
   const { user } = useContext(AuthContext);
-  const [category, setCategory] = useState("");
-    const navigate = useNavigate();
+  const {id}= useParams();
+  const [listing, setListing] = useState();
+  const navigate = useNavigate();
 
 
-  const handleSubmit = (e) => {
+    useEffect(()=>{
+        axios.get(`http://localhost:3000/listing/${id}`).then((res) => {
+      console.log(res);
+      setListing(res.data)
+    });
+    },[id])
+
+  const handleUpdate = (e) => {
     e.preventDefault();
     const form = e.target;
     const name = form.name.value;
@@ -30,22 +38,25 @@ const AddListing = () => {
       image,
       date,
       email,
+      createdAt:listing?.createdAt
     };
     console.log(formData);
-    axios.post('http://localhost:3000/listing', formData)
+    axios.put(`http://localhost:3000/update/${id}`, formData)
     .then(res=>{
-        console.log(res)
-        navigate('/my-listings')
+      console.log(res);
+      navigate('/my-listings')
     })
+    
   };
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-xl">
-      <h2 className="text-3xl font-bold text-center mb-6">Add New Listing</h2>
+      <h2 className="text-3xl font-bold text-center mb-6">Update Listing</h2>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleUpdate} className="space-y-4">
         <div>
           <label className="font-semibold">Product / Pet Name</label>
           <input
+          defaultValue={listing?.name}
             type="text"
             name="name"
             required
@@ -56,10 +67,10 @@ const AddListing = () => {
         <div>
           <label className="font-semibold">Category</label>
           <select
+          defaultValue={listing?.category}
             className="select select-bordered w-full"
             name="category"
             required
-            onChange={(e) => setCategory(e.target.value)}
           >
             <option value="">Select Category</option>
             <option value="Pets">Pets</option>
@@ -71,21 +82,19 @@ const AddListing = () => {
         <div>
           <label className="font-semibold">Price</label>
           <input
+          defaultValue={listing?.price}
             type="number"
             name="price"
             required
             min="0"
-            value={category === "Pets" ? 0 : undefined}
-            readOnly={category === "Pets"}
             className="input input-bordered w-full"
-            placeholder={
-              category === "Pets" ? "Pets price is always 0" : "Enter price"
-            }
+            placeholder={"Enter price"}
           />
         </div>
         <div>
           <label className="font-semibold">Location</label>
           <input
+          defaultValue={listing?.location}
             type="text"
             name="location"
             required
@@ -105,6 +114,7 @@ const AddListing = () => {
         <div>
           <label className="font-semibold">Image URL</label>
           <input
+          defaultValue={listing?.image}
             type="text"
             name="image"
             required
@@ -115,6 +125,7 @@ const AddListing = () => {
         <div>
           <label className="font-semibold">Pick Up Date</label>
           <input
+          defaultValue={listing?.date}
             type="date"
             name="date"
             required
@@ -132,11 +143,11 @@ const AddListing = () => {
           />
         </div>
         <button className="btn btn-secondary w-full text-white mt-4">
-          Add Listing
+          Update
         </button>
       </form>
     </div>
   );
 };
 
-export default AddListing;
+export default UpdateListing;
