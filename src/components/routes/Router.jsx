@@ -14,6 +14,7 @@ import CategoryListings from "../category/CategoryListing";
 import UpdateListing from "../update/UpdateListing";
 import MyOrders from "../../pages/MyOrders";
 import NotFound from "../error/NotFound";
+import PrivateRoute from "../../provider/PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -58,7 +59,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/listing/:id",
-        element: <Details/>
+        element: <PrivateRoute><Details/></PrivateRoute>
       },
       {
         path: "/updatelist/:id",
