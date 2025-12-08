@@ -6,7 +6,25 @@ const Pets = () => {
   const [filteredListings, setFilteredListings] = useState([]);
   const [category, setCategory] = useState("All");
   const [loading, setLoading] = useState(true);
-  
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    if (searchTerm === "") {
+      setFilteredListings(listings); // show all if search is empty
+    } else {
+      const filtered = listings.filter((listing) =>
+        listing.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredListings(filtered);
+    }
+  }, [searchTerm, listings]);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/listing")
+      .then((res) => res.json())
+      .then((data) => setListings(data))
+      .catch((err) => console.error(err));
+  }, []);
 
   useEffect(() => {
     fetch("http://localhost:3000/listing")
@@ -42,7 +60,31 @@ const Pets = () => {
         All Pets&Supplies
       </h2>
       <div className="flex justify-between items-center mb-8 border-b-2">
-        <p className="font-semibold underline">Total Services: {filteredListings.length}</p>
+        
+          <p className="font-semibold underline">
+            Total Services: {filteredListings.length}
+          </p>
+          <label className="input">
+  <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <g
+      strokeLinejoin="round"
+      strokeLinecap="round"
+      strokeWidth="2.5"
+      fill="none"
+      stroke="currentColor"
+    >
+      <circle cx="11" cy="11" r="8"></circle>
+      <path d="m21 21-4.3-4.3"></path>
+    </g>
+  </svg>
+  <input
+            type="text"
+            placeholder="Search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+</label>
+          
         <select
           className="select select-bordered w-60 m-2"
           value={category}
@@ -72,17 +114,19 @@ const Pets = () => {
               <div className="p-4">
                 <h3 className="font-bold text-xl">{item.name}</h3>
                 <p className="text-gray-600 mt-2 font-semibold">
-                  {item.category === "Pets" 
+                  {item.category === "Pets"
                     ? "Free for Adoption"
                     : `Price: $${item.price}`}
                 </p>
-                <div className="flex justify-between items-center">   
-                <p className="text-gray-600 mt-1">
-                  <span className="font-semibold">Category:</span> {item.category}
-                </p>
-                <p className="text-gray-600 mt-1">
-                  <span className="font-semibold">Location:</span> {item.location}
-                </p>
+                <div className="flex justify-between items-center">
+                  <p className="text-gray-600 mt-1">
+                    <span className="font-semibold">Category:</span>{" "}
+                    {item.category}
+                  </p>
+                  <p className="text-gray-600 mt-1">
+                    <span className="font-semibold">Location:</span>{" "}
+                    {item.location}
+                  </p>
                 </div>
                 <Link
                   to={`/listing/${item._id}`}
