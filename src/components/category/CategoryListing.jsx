@@ -7,10 +7,10 @@ const CategoryListings = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3000/listing")
+    fetch("https://backend10-phi.vercel.app/listing")
       .then((res) => res.json())
       .then((data) => {
-        const filtered = data.filter((item) => (item.category === category));
+        const filtered = data.filter((item) => item.category === category);
         setListings(filtered);
         setLoading(false);
       })
@@ -20,7 +20,7 @@ const CategoryListings = () => {
       });
   }, [category]);
 
-  if (loading) return <p className="text-center py-10">Loading...</p>;
+  if (loading) return <p className="flex flex-col items-center text-center py-10">Loading...<progress className="progress w-56"></progress></p>;
   if (listings.length === 0)
     return (
       <p className="text-center py-10 text-gray-500">
@@ -54,13 +54,15 @@ const CategoryListings = () => {
               </p>
               <div className="flex justify-between items-center">
                 <p className="text-gray-600 mt-1">
-                <span className="font-semibold">Category:</span> {item.category}
-              </p>
-              <p className="text-gray-600 mt-1">
-                <span className="font-semibold">Location:</span> {item.location}
-              </p>
+                  <span className="font-semibold">Category:</span>{" "}
+                  {item.category}
+                </p>
+                <p className="text-gray-600 mt-1">
+                  <span className="font-semibold">Location:</span>{" "}
+                  {item.location}
+                </p>
               </div>
-              
+
               <Link
                 to={`/listing/${item._id}`}
                 className="btn btn-secondary w-full mt-3 text-white"

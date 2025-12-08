@@ -13,7 +13,7 @@ const Details = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/listing/${id}`)
+    fetch(`https://backend10-phi.vercel.app/listing/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setListing(data);
@@ -43,7 +43,7 @@ const Details = () => {
     };
 
     axios
-      .post("http://localhost:3000/orders", formData)
+      .post("https://backend10-phi.vercel.app/orders", formData)
       .then((res) => {
         Swal.fire({
           title: "Drag me!",
@@ -62,8 +62,7 @@ const Details = () => {
       </p>
     );
 
-  if (!listing)
-    return <p className="text-center py-10">Listing not found.</p>;
+  if (!listing) return <p className="text-center py-10">Listing not found.</p>;
 
   return (
     <div className="p-5">

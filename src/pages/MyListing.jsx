@@ -9,7 +9,7 @@ const MyListing = () => {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/my-listings?email=${user?.email}`)
+    fetch(`https://backend10-phi.vercel.app/my-listings?email=${user?.email}`)
       .then((res) => res.json())
       .then((data) => {
         setMyListings(data);
@@ -31,20 +31,22 @@ const MyListing = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`http://localhost:3000/delete/${id}`).then((res) => {
-          console.log(res.data);
-          if (res.data.deletedCount == 1) {
-            const filterData = myListings.filter(
-              (listing) => listing._id != id
-            );
-            setMyListings(filterData);
-            Swal.fire({
-              title: "Deleted!",
-              text: "Your file has been deleted.",
-              icon: "success",
-            });
-          }
-        });
+        axios
+          .delete(`https://backend10-phi.vercel.app/delete/${id}`)
+          .then((res) => {
+            console.log(res.data);
+            if (res.data.deletedCount == 1) {
+              const filterData = myListings.filter(
+                (listing) => listing._id != id
+              );
+              setMyListings(filterData);
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success",
+              });
+            }
+          });
       }
     });
   };

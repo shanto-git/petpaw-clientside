@@ -5,17 +5,16 @@ import { useNavigate, useParams } from "react-router";
 
 const UpdateListing = () => {
   const { user } = useContext(AuthContext);
-  const {id}= useParams();
+  const { id } = useParams();
   const [listing, setListing] = useState();
   const navigate = useNavigate();
 
-
-    useEffect(()=>{
-        axios.get(`http://localhost:3000/listing/${id}`).then((res) => {
+  useEffect(() => {
+    axios.get(`https://backend10-phi.vercel.app/listing/${id}`).then((res) => {
       console.log(res);
-      setListing(res.data)
+      setListing(res.data);
     });
-    },[id])
+  }, [id]);
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -38,15 +37,15 @@ const UpdateListing = () => {
       image,
       date,
       email,
-      createdAt:listing?.createdAt
+      createdAt: listing?.createdAt,
     };
     console.log(formData);
-    axios.put(`http://localhost:3000/update/${id}`, formData)
-    .then(res=>{
-      console.log(res);
-      navigate('/my-listings')
-    })
-    
+    axios
+      .put(`https://backend10-phi.vercel.app/update/${id}`, formData)
+      .then((res) => {
+        console.log(res);
+        navigate("/my-listings");
+      });
   };
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-xl">
@@ -56,7 +55,7 @@ const UpdateListing = () => {
         <div>
           <label className="font-semibold">Product / Pet Name</label>
           <input
-          defaultValue={listing?.name}
+            defaultValue={listing?.name}
             type="text"
             name="name"
             required
@@ -67,7 +66,7 @@ const UpdateListing = () => {
         <div>
           <label className="font-semibold">Category</label>
           <select
-          defaultValue={listing?.category}
+            defaultValue={listing?.category}
             className="select select-bordered w-full"
             name="category"
             required
@@ -82,7 +81,7 @@ const UpdateListing = () => {
         <div>
           <label className="font-semibold">Price</label>
           <input
-          defaultValue={listing?.price}
+            defaultValue={listing?.price}
             type="number"
             name="price"
             required
@@ -94,7 +93,7 @@ const UpdateListing = () => {
         <div>
           <label className="font-semibold">Location</label>
           <input
-          defaultValue={listing?.location}
+            defaultValue={listing?.location}
             type="text"
             name="location"
             required
@@ -114,7 +113,7 @@ const UpdateListing = () => {
         <div>
           <label className="font-semibold">Image URL</label>
           <input
-          defaultValue={listing?.image}
+            defaultValue={listing?.image}
             type="text"
             name="image"
             required
@@ -125,7 +124,7 @@ const UpdateListing = () => {
         <div>
           <label className="font-semibold">Pick Up Date</label>
           <input
-          defaultValue={listing?.date}
+            defaultValue={listing?.date}
             type="date"
             name="date"
             required

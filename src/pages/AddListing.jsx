@@ -32,30 +32,32 @@ const AddListing = () => {
       email,
     };
     console.log(formData);
-    axios.post("http://localhost:3000/listing", formData).then((res) => {
-      console.log(res);
-      if (res.data.acknowledged) {
-        Swal.fire({
-          title: "Add Listing Successfully",
-          icon: "success",
-          draggable: true,
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Something went wrong!",
-        }).catch((err) => {
-          console.log(err);
+    axios
+      .post("https://backend10-phi.vercel.app/listing", formData)
+      .then((res) => {
+        console.log(res);
+        if (res.data.acknowledged) {
+          Swal.fire({
+            title: "Add Listing Successfully",
+            icon: "success",
+            draggable: true,
+          });
+        } else {
           Swal.fire({
             icon: "error",
             title: "Oops...",
             text: "Something went wrong!",
+          }).catch((err) => {
+            console.log(err);
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Something went wrong!",
+            });
           });
-        });
-      }
-      navigate("/my-listings");
-    });
+        }
+        navigate("/my-listings");
+      });
   };
   return (
     <div className="max-w-2xl mx-auto p-6 shadow-lg rounded-xl">

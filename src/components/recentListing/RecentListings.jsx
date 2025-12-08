@@ -5,20 +5,18 @@ const RecentListings = () => {
   const [listings, setListings] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/listing")
+    fetch("https://backend10-phi.vercel.app/listing")
       .then((res) => res.json())
       .then((data) => {
         const newData = data
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-        .slice(0, 6);
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .slice(0, 6);
         setListings(newData);
       })
       .catch((error) => {
         console.error("Error fetching listings:", error);
       });
   }, []);
-
-
 
   return (
     <div className="py-12 px-4 md:px-10 lg:px-20">
@@ -40,18 +38,18 @@ const RecentListings = () => {
             <div className="p-4">
               <h3 className="font-bold text-xl">{item.name}</h3>
               <p className="text-gray-600 mt-1">
-                  {item.category === "Pets (Adoption)" ? (
-                    <span className="font-bold">Free for Adoption</span>
-                  ) : (
-                    <span className="font-semibold">Price: ${item.price}</span>
-                  )}
-                </p>
-              
-
-              <div className="flex justify-between"> 
-                  <p className="text-gray-600 mt-1">
-                <span className="font-semibold">Category:</span> {item.category}
+                {item.category === "Pets (Adoption)" ? (
+                  <span className="font-bold">Free for Adoption</span>
+                ) : (
+                  <span className="font-semibold">Price: ${item.price}</span>
+                )}
               </p>
+
+              <div className="flex justify-between">
+                <p className="text-gray-600 mt-1">
+                  <span className="font-semibold">Category:</span>{" "}
+                  {item.category}
+                </p>
                 <p className="text-gray-600 mt-1 mb-3">
                   <span className="font-semibold">Location:</span>{" "}
                   {item.location}
