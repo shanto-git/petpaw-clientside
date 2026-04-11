@@ -1,52 +1,62 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router-dom"; // react-router-dom নিশ্চিত করুন
+import Swal from "sweetalert2";
 
 const UpdateListing = () => {
   const { user } = useContext(AuthContext);
   const { id } = useParams();
-  const [listing, setListing] = useState();
+  const [listing, setListing] = useState({});
   const navigate = useNavigate();
+  const baseUrl = "http://localhost:5000";
 
   useEffect(() => {
-    axios.get(`https://backend10-phi.vercel.app/listing/${id}`).then((res) => {
-      console.log(res);
-      setListing(res.data);
-    });
+    if (id) {
+      axios.get(`${baseUrl}/listing/${id}`)
+        .then((res) => {
+          setListing(res.data);
+        })
+        .catch((err) => {
+          console.error("Data fetch error:", err);
+        });
+    }
   }, [id]);
 
   const handleUpdate = (e) => {
     e.preventDefault();
     const form = e.target;
-    const name = form.name.value;
-    const category = form.category.value;
-    const price = parseInt(form.price.value);
-    const location = form.location.value;
-    const description = form.description.value;
-    const image = form.image.value;
-    const date = form.date.value;
-    const email = form.email.value;
 
     const formData = {
-      name,
-      category,
-      price,
-      location,
-      description,
-      image,
-      date,
-      email,
-      createdAt: listing?.createdAt,
+      name: form.name.value,
+      category: form.category.value,
+      price: parseInt(form.price.value),
+      location: form.location.value,
+      description: form.description.value,
+      image: form.image.value,
+      date: form.date.value,
+      email: user?.email,
     };
-    console.log(formData);
-    axios
-      .put(`https://backend10-phi.vercel.app/update/${id}`, formData)
+
+    axios.put(`${baseUrl}/listing/${id}`, formData)
       .then((res) => {
-        console.log(res);
-        navigate("/my-listings");
-      });
+        if (res.data.modifiedCount > 0) {
+          Swal.fire({
+            title: "Success!",
+            text: "Listing Updated Successfully",
+            icon: "success",
+            confirmButtonText: "Ok"
+          });
+          navigate("/dashboard/my-listings");
+        }
+      })
+      .catch(err => console.error(err));
   };
+
+  if (!listing._id) {
+    return <div className="text-center mt-10"><p>Loading Data...</p><progress className="progress w-56"></progress></div>;
+  }
+
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-xl">
       <h2 className="text-3xl font-bold text-center mb-6">Update Listing</h2>
@@ -60,7 +70,6 @@ const UpdateListing = () => {
             name="name"
             required
             className="input input-bordered w-full"
-            placeholder="Enter product or pet name"
           />
         </div>
         <div>
@@ -71,7 +80,6 @@ const UpdateListing = () => {
             name="category"
             required
           >
-            <option value="">Select Category</option>
             <option value="Pets">Pets</option>
             <option value="Food">Food</option>
             <option value="Accessories">Accessories</option>
@@ -85,9 +93,7 @@ const UpdateListing = () => {
             type="number"
             name="price"
             required
-            min="0"
             className="input input-bordered w-full"
-            placeholder={"Enter price"}
           />
         </div>
         <div>
@@ -98,16 +104,15 @@ const UpdateListing = () => {
             name="location"
             required
             className="input input-bordered w-full"
-            placeholder="Enter location"
           />
         </div>
         <div>
           <label className="font-semibold">Description</label>
           <textarea
             name="description"
+            defaultValue={listing?.description}
             required
             className="textarea textarea-bordered w-full"
-            placeholder="Write a short description..."
           ></textarea>
         </div>
         <div>
@@ -118,7 +123,6 @@ const UpdateListing = () => {
             name="image"
             required
             className="input input-bordered w-full"
-            placeholder="https://example.com/image.jpg"
           />
         </div>
         <div>
@@ -135,14 +139,13 @@ const UpdateListing = () => {
           <label className="font-semibold">Your Email</label>
           <input
             type="email"
-            name="email"
-            readOnly
             value={user?.email}
+            readOnly
             className="input input-bordered w-full bg-gray-100"
           />
         </div>
         <button className="btn btn-secondary w-full text-white mt-4">
-          Update
+          Update Listing
         </button>
       </form>
     </div>

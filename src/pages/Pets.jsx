@@ -60,7 +60,7 @@ const Pets = () => {
         All Pets&Supplies
       </h2>
       <div className="flex justify-between items-center mb-8 border-b-2">
-        <p className="font-semibold underline">
+        <p className="font-semibold underline hidden lg:inline">
           Total Services: {filteredListings.length}
         </p>
         <label className="input">

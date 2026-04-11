@@ -9,7 +9,7 @@ const MyListing = () => {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    fetch(`https://backend10-phi.vercel.app/my-listings?email=${user?.email}`)
+    fetch(`http://localhost:5000/my-listings?email=${user?.email}`)
       .then((res) => res.json())
       .then((data) => {
         setMyListings(data);
@@ -32,7 +32,7 @@ const MyListing = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`https://backend10-phi.vercel.app/delete/${id}`)
+          .delete(`http://localhost:5000/listing/${id}`)
           .then((res) => {
             console.log(res.data);
             if (res.data.deletedCount == 1) {
@@ -79,7 +79,7 @@ const MyListing = () => {
                 <td>{listing?.category}</td>
                 <td>{listing?.date}</td>
                 <th className="flex gap-2">
-                  <Link to={`/updatelist/${listing?._id}`}>
+                  <Link to={`/dashboard/updatelist/${listing?._id}`}>
                     <button className="btn btn-warning btn-xs">Update</button>
                   </Link>
                   <button

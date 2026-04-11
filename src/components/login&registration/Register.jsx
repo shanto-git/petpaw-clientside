@@ -2,10 +2,10 @@ import React, { useContext, useState } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
+import Swal from "sweetalert2"; // মিষ্টি অ্যালার্ট এর জন্য (যদি ইনস্টল করা থাকে)
 
 const Register = () => {
-  const { createUser, updateUser, signInWithGoogle, loading, setLoading } =
-    useContext(AuthContext);
+  const { createUser, signInWithGoogle, loading, setLoading } = useContext(AuthContext);
   const [name, setName] = useState("");
   const [photoURL, setPhotoURL] = useState("");
   const [email, setEmail] = useState("");
@@ -18,29 +18,15 @@ const Register = () => {
     const uppercase = /[A-Z]/;
     const lowercase = /[a-z]/;
 
-    if (!minLength.test(password)) {
-      return "Password must be at least 6 characters.";
-    }
-    if (!uppercase.test(password)) {
-      return "Password must contain at least 1 uppercase letter.";
-    }
-    if (!lowercase.test(password)) {
-      return "Password must contain at least 1 lowercase letter.";
-    }
+    if (!minLength.test(password)) return "Password must be at least 6 characters.";
+    if (!uppercase.test(password)) return "Password must contain at least 1 uppercase letter.";
+    if (!lowercase.test(password)) return "Password must contain at least 1 lowercase letter.";
     return null;
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
-
-    // Validate fields
-    if (!name || !email || !password) {
-      setError("Please fill in all required fields.");
-      return;
-    }
-
-    // Validate password
     const passwordError = validatePassword(password);
     if (passwordError) {
       setError(passwordError);
@@ -49,109 +35,125 @@ const Register = () => {
 
     try {
       setLoading(true);
-      const result = await createUser(email, password);
-
-      // Update user profile
-      await updateUser({
-        displayName: name,
-        photoURL: photoURL || "https://i.ibb.co/placeholder.png",
-      });
+      
+      await createUser(
+        email, 
+        password, 
+        name, 
+        photoURL || "https://i.ibb.co/placeholder.png", 
+        "buyer"
+      );
 
       setLoading(false);
-      navigate("/"); // redirect after registration
+      navigate("/");
+      
     } catch (err) {
       setLoading(false);
       setError(err.message);
+      console.error("Registration Error:", err);
     }
   };
 
   const handleGoogleLogin = async () => {
     try {
+      setLoading(true);
       await signInWithGoogle();
       navigate("/");
     } catch (err) {
-      console.log(err);
+      setLoading(false);
       setError(err.message);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 py-10">
       <form
         onSubmit={handleRegister}
-        className="bg-white p-8 rounded shadow-md w-full max-w-md"
+        className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md border border-gray-200"
       >
-        <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
+        <h2 className="text-3xl font-extrabold mb-6 text-center text-secondary">Create Account</h2>
 
         {error && (
-          <div className="bg-red-100 text-red-700 p-2 mb-4 rounded">{error}</div>
+          <div className="bg-red-50 text-red-600 border border-red-200 p-3 mb-4 rounded-lg text-sm">
+            {error}
+          </div>
         )}
 
-        <div className="mb-4">
-          <label className="block mb-1 text-gray-700">Name</label>
-          <input
-            type="text"
-            placeholder="Enter your email"
-            className="w-full border p-2 rounded"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Full Name</label>
+            <input
+              type="text"
+              placeholder="John Doe"
+              className="w-full border p-3 rounded-lg mt-1 focus:ring-2 focus:ring-secondary outline-none"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Photo URL</label>
+            <input
+              type="text"
+              placeholder="https://example.com/photo.jpg"
+              className="w-full border p-3 rounded-lg mt-1 focus:ring-2 focus:ring-secondary outline-none"
+              value={photoURL}
+              onChange={(e) => setPhotoURL(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Email Address</label>
+            <input
+              type="email"
+              placeholder="name@example.com"
+              className="w-full border p-3 rounded-lg mt-1 focus:ring-2 focus:ring-secondary outline-none"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <input
+              type="password"
+              placeholder="••••••••"
+              className="w-full border p-3 rounded-lg mt-1 focus:ring-2 focus:ring-secondary outline-none"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
         </div>
 
-        <div className="mb-4">
-          <label className="block mb-1 text-gray-700">Photo URL</label>
-          <input
-            type="text"
-            placeholder="Place your photo"
-            className="w-full border p-2 rounded"
-            value={photoURL}
-            onChange={(e) => setPhotoURL(e.target.value)}
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block mb-1 text-gray-700">Email</label>
-          <input
-            type="email"
-            placeholder="Enter your email"
-            className="w-full border p-2 rounded"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="block mb-1 text-gray-700">Password</label>
-          <input
-            type="password"
-            placeholder="Type your password"
-            className="w-full border p-2 rounded"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        <p className="text-sm text-gray-600">Already have an account? <Link to="/login" className="text-blue-700 hover:underline">Login here</Link> </p>
-        </div>
         <button
           type="submit"
-          className="btn btn-block btn-outline btn-secondary font-bold hover:text-white"
-          disabled={loading}
+          className={`btn btn-secondary w-full mt-6 font-bold`}
         >
-          {loading ? "Registering..." : "Register"}
+          {loading ? "Loading..." : "Sign Up"}
         </button>
+
+        <div className="divider">OR</div>
 
         <button
           type="button"
           onClick={handleGoogleLogin}
-          className="btn btn-block my-2"
+          className="btn btn-outline w-full flex items-center justify-center gap-2"
         >
-         <FcGoogle /> Register with Google
+          <FcGoogle size={20} /> Continue with Google
         </button>
+
+        <p className="text-center text-sm text-gray-600 mt-6">
+          Already have an account?{" "}
+          <Link to="/login" className="text-secondary font-bold hover:underline">
+            Login
+          </Link>
+        </p>
       </form>
     </div>
-  );    
+  );
 };
 
 export default Register;

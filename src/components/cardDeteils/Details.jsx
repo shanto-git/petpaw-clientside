@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../../provider/AuthProvider";
-import toast from "react-hot-toast";
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -17,10 +16,6 @@ const Details = () => {
       .then((res) => res.json())
       .then((data) => {
         setListing(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching listing:", error);
         setLoading(false);
       });
   }, [id]);
@@ -42,58 +37,57 @@ const Details = () => {
       notes: form.notes.value,
     };
 
-    axios
-      .post("https://backend10-phi.vercel.app/orders", formData)
-      .then((res) => {
-        Swal.fire({
-          title: "Drag me!",
-          icon: "success",
-          draggable: true,
-        });
-        setIsModalOpen(false);
-      })
-      .catch((err) => console.log(err));
+    axios.post("https://backend10-phi.vercel.app/orders", formData).then(() => {
+      Swal.fire({
+        icon: "success",
+        title: "Order Successful",
+      });
+      setIsModalOpen(false);
+    });
   };
 
   if (loading)
     return (
-      <p className=" flex flex-col items-center text-center py-10 text-lg">
-        Loading...<progress className="progress w-56"></progress>
-      </p>
+      <div className="flex flex-col items-center py-10">
+        <p>Loading...</p>
+        <progress className="progress w-56"></progress>
+      </div>
     );
 
-  if (!listing) return <p className="text-center py-10">Listing not found.</p>;
-
   return (
-    <div className="p-5">
-      <div className="flex justify-start items-center gap-5 mx-auto">
+    <div className="max-w-6xl mx-auto p-4">
+      {/* MAIN CONTENT */}
+      <div className="flex flex-col lg:flex-row gap-8">
+        {/* IMAGE */}
         <img
           src={listing.image}
           alt={listing.name}
-          className="w-72 h-72 object-cover rounded-lg"
+          className="w-full lg:w-1/3 h-64 lg:h-80 object-cover rounded-lg order-1"
         />
 
-        <div>
-          <h1 className="text-3xl font-bold">{listing.name}</h1>
+        {/* INFO */}
+        <div className="flex-1 order-2">
+          <h1 className="text-2xl lg:text-3xl font-bold">{listing.name}</h1>
 
-          <div className="flex justify-between items-center">
-            <p className="mt-2 font-semibold">
-              {listing.category == "Pets"
+          <div className="flex justify-between mt-3 gap-2">
+            <p className="font-semibold">
+              {listing.category === "Pets"
                 ? "Free for Adoption"
                 : `Price: $${listing.price}`}
             </p>
-            <p className="mt-2">
+
+            <p>
               <span className="font-semibold">Category:</span>{" "}
               {listing.category}
             </p>
           </div>
 
-          <div className="flex justify-between items-center gap-10">
-            <p className="mt-1">
+          <div className="flex flex-col sm:flex-row justify-between gap-2 mt-2">
+            <p>
               <span className="font-semibold">Owner Email:</span>{" "}
               {listing.email}
             </p>
-            <p className="mt-1">
+            <p>
               <span className="font-semibold">Location:</span>{" "}
               {listing.location}
             </p>
@@ -101,119 +95,112 @@ const Details = () => {
 
           <button
             onClick={() => setIsModalOpen(true)}
-            className="btn btn-secondary mt-6 w-full"
+            className="btn btn-secondary mt-6 w-full sm:w-auto"
           >
             {listing.category === "Pets" ? "Adopt" : "Order Now"}
           </button>
         </div>
-
-        {/* MODAL */}
-        {isModalOpen && (
-          <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm">
-            <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-5">
-              <h2 className="text-2xl text-center font-bold mb-3">
-                Place Your Order
-              </h2>
-
-              <form onSubmit={handleOrder} className="space-y-3">
-                <input
-                  type="text"
-                  name="buyerName"
-                  value={user?.displayName}
-                  readOnly
-                  className="input input-bordered w-full bg-gray-100"
-                />
-
-                <input
-                  type="email"
-                  name="email"
-                  value={user?.email}
-                  readOnly
-                  className="input input-bordered w-full bg-gray-100"
-                />
-
-                <input
-                  type="text"
-                  name="listingId"
-                  value={listing._id}
-                  readOnly
-                  className="input input-bordered w-full bg-gray-100"
-                />
-
-                <input
-                  type="text"
-                  name="listingName"
-                  value={listing.name}
-                  readOnly
-                  className="input input-bordered w-full bg-gray-100"
-                />
-
-                {listing.category !== "Pets" && (
-                  <input
-                    type="number"
-                    name="quantity"
-                    defaultValue={1}
-                    className="input input-bordered w-full"
-                  />
-                )}
-
-                <input
-                  type="text"
-                  name="price"
-                  value={listing.price}
-                  readOnly
-                  className="input input-bordered w-full bg-gray-100"
-                />
-
-                <input
-                  type="text"
-                  name="address"
-                  required
-                  className="input input-bordered w-full"
-                  placeholder="Address"
-                />
-
-                <input
-                  type="date"
-                  name="date"
-                  defaultValue={new Date().toISOString().split("T")[0]}
-                  className="input input-bordered w-full"
-                />
-
-                <input
-                  type="tel"
-                  name="phone"
-                  required
-                  className="input input-bordered w-full"
-                  placeholder="Phone Number"
-                />
-
-                <textarea
-                  name="notes"
-                  className="textarea textarea-bordered w-full"
-                  placeholder="Additional Notes"
-                ></textarea>
-
-                <div className="flex justify-end gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setIsModalOpen(false)}
-                    className="btn btn-ghost"
-                  >
-                    Cancel
-                  </button>
-                  <button className="btn btn-secondary">Submit</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
       </div>
 
-      <p className="mt-4">
-        <span className="font-semibold underline block mb-1">Description:</span>
-        {listing.description}
-      </p>
+      {/* DESCRIPTION */}
+      <div className="mt-6">
+        <span className="font-semibold underline block mb-2">Description:</span>
+        <p>{listing.description}</p>
+      </div>
+
+      {/* MODAL */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+          <div className="bg-white w-full max-w-md rounded-lg p-5">
+            <h2 className="text-xl font-bold text-center mb-4">
+              Place Your Order
+            </h2>
+
+            <form onSubmit={handleOrder} className="space-y-3">
+              <input
+                type="text"
+                value={user?.displayName}
+                readOnly
+                className="input input-bordered w-full bg-gray-100"
+              />
+              <input
+                type="email"
+                value={user?.email}
+                readOnly
+                className="input input-bordered w-full bg-gray-100"
+              />
+              <input
+                type="text"
+                value={listing._id}
+                readOnly
+                className="input input-bordered w-full bg-gray-100"
+              />
+              <input
+                type="text"
+                value={listing.name}
+                readOnly
+                className="input input-bordered w-full bg-gray-100"
+              />
+
+              {listing.category !== "Pets" && (
+                <input
+                  type="number"
+                  name="quantity"
+                  defaultValue={1}
+                  className="input input-bordered w-full"
+                />
+              )}
+
+              <input
+                type="text"
+                value={listing.price}
+                readOnly
+                className="input input-bordered w-full bg-gray-100"
+              />
+
+              <input
+                type="text"
+                name="address"
+                placeholder="Address"
+                required
+                className="input input-bordered w-full"
+              />
+
+              <input
+                type="date"
+                name="date"
+                defaultValue={new Date().toISOString().split("T")[0]}
+                className="input input-bordered w-full"
+              />
+
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Phone Number"
+                required
+                className="input input-bordered w-full"
+              />
+
+              <textarea
+                name="notes"
+                placeholder="Additional Notes"
+                className="textarea textarea-bordered w-full"
+              />
+
+              <div className="flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="btn btn-ghost"
+                >
+                  Cancel
+                </button>
+                <button className="btn btn-secondary">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

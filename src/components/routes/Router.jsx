@@ -1,6 +1,9 @@
 import React from "react";
-import { createBrowserRouter } from "react-router-dom"; // make sure it's react-router-dom
+import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../../layout/MainLayout";
+import DashboardLayout from "../../layout/DashboardLayout"; 
+
+// Pages & Components Import
 import Home from "../../pages/Home";
 import Register from "../login&registration/Register";
 import Login from "../login&registration/Login";
@@ -14,28 +17,29 @@ import CategoryListings from "../category/CategoryListing";
 import UpdateListing from "../update/UpdateListing";
 import MyOrders from "../../pages/MyOrders";
 import NotFound from "../error/NotFound";
-import PrivateRoute from "../../provider/PrivateRoute";
-
+import PrivateRoute from "../../provider/PrivateRoute";;
+import ManageUsers from "../dashboard/admin/ManageUser";
 const router = createBrowserRouter([
+  // --- মেইন ওয়েবসাইট রুটস ---
   {
     path: "/",
     element: <MainLayout />,
     children: [
       {
         path: "/",
-        element: <Home />, // ⚠ pass JSX, not the component
+        element: <Home />,
       },
       {
-        path:"/pets",
-        element:<Pets/>
+        path: "/pets",
+        element: <Pets />,
       },
       {
-        path:"/category/:category",
-        element:<CategoryListings/>
+        path: "/category/:category",
+        element: <CategoryListings />,
       },
       {
         path: "/chooseLogin",
-        element: <MultiLogin />, // ⚠ not Component
+        element: <MultiLogin />,
       },
       {
         path: "/login",
@@ -46,35 +50,57 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       {
-        path:"/profile",
-        element: <Profile/>
-      },
-      {
-        path:"/add-listing",
-        element: <AddListing/>
-      },
-      {
-        path:"/my-listings",
-        element: <MyListing/>
-      },
-      {
         path: "/listing/:id",
-        element: <PrivateRoute><Details/></PrivateRoute>
-      },
-      {
-        path: "/updatelist/:id",
-        element: <UpdateListing/>
-      },
-      {
-        path: "/my-orders",
-        element: <MyOrders/>
+        element: (
+          <PrivateRoute>
+            <Details />
+          </PrivateRoute>
+        ),
       },
     ],
   },
+
+  // --- ড্যাশবোর্ড রুটস (Nested Routing) ---
   {
-    path:"*",
-    element: <NotFound/>
-  }
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        path: "manage-users",
+        element: <ManageUsers />,
+      },
+
+      {
+        path: "profile",
+        element: <Profile />,
+      },
+      {
+        path: "add-listing",
+        element: <AddListing />,
+      },
+      {
+        path: "my-listings",
+        element: <MyListing />,
+      },
+      {
+        path: "updatelist/:id",
+        element: <UpdateListing />,
+      },
+      {
+        path: "my-orders",
+        element: <MyOrders />,
+      },
+    ],
+  },
+
+  {
+    path: "/*",
+    element: <NotFound />,
+  },
 ]);
 
 export default router;

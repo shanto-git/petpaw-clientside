@@ -17,11 +17,62 @@ const googleProvider = new GoogleAuthProvider();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [role, setRole] = useState(null); 
   const [loading, setLoading] = useState(true);
 
-  const createUser = (email, password) => {
+  const baseUrl = "http://localhost:5000";
+
+  const createUser = async (email, password, name, photo, userRole = "buyer") => {
     setLoading(true);
-    return createUserWithEmailAndPassword(auth, email, password);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const newUser = userCredential.user;
+      await updateProfile(newUser, { displayName: name, photoURL: photo });
+
+      const userData = {
+        email: newUser.email,
+        name,
+        photoURL: photo,
+        role: userRole,
+      };
+
+      await fetch(`${baseUrl}/users`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+      });
+
+      return newUser;
+    } catch (error) {
+      setLoading(false);
+      throw error;
+    }
+  };
+
+  const signInWithGoogle = async () => {
+    setLoading(true);
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const googleUser = result.user;
+
+      const userData = {
+        email: googleUser.email,
+        name: googleUser.displayName,
+        photoURL: googleUser.photoURL,
+        role: "buyer",
+      };
+
+      await fetch(`${baseUrl}/users`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+      });
+
+      return googleUser;
+    } catch (error) {
+      setLoading(false);
+      throw error;
+    }
   };
 
   const signIn = (email, password) => {
@@ -29,41 +80,50 @@ const AuthProvider = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  const signInWithGoogle = () => {
-    return signInWithPopup(auth, googleProvider);
-  };
-
-  const updateUser = (updateData) => {
-    return updateProfile(auth.currentUser, updateData);
-  };
-
   const logOut = () => {
+    setLoading(true);
     return signOut(auth);
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
+
+      if (currentUser?.email) {
+        try {
+          const response = await fetch(`${baseUrl}/users/${currentUser.email}`);
+          
+          if (response.ok) {
+            const data = await response.json();
+            setRole(data?.role || "buyer");
+          } else {
+            setRole("buyer");
+          }
+        } catch (error) {
+          console.error("Error fetching role:", error);
+          setRole("buyer");
+        }
+      } else {
+        setRole(null);
+      }
       setLoading(false);
     });
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+    return () => unsubscribe();
+  }, [baseUrl]);
 
-  const authData = {
+  const authInfo = {
     user,
-    setUser,
-    createUser,
-    logOut,
-    signIn,
+    role,
     loading,
-    setLoading,
-    updateUser,
+    setLoading, 
+    createUser,
+    signIn,
     signInWithGoogle,
+    logOut,
   };
+
   return (
-    <AuthContext.Provider value={authData}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
   );
 };
 

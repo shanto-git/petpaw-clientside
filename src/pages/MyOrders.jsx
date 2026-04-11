@@ -1,17 +1,22 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../provider/AuthProvider";
 
 const MyOrders = () => {
+  const { user } = useContext(AuthContext);
+  const email = user?.email;
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
+    if (!email) return;
+
     axios
-      .get("https://backend10-phi.vercel.app/orders")
+      .get(`http://localhost:5000/orders?email=${email}`)
       .then((res) => {
         setOrders(res.data);
       })
-      .catch((err) => console.log(err));
-  }, []);
+      .catch(console.error);
+  }, [email]);
   console.log(orders);
 
   return (

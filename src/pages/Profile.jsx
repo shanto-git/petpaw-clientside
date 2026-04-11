@@ -5,6 +5,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { FaBackspace } from "react-icons/fa";
 import { TbLogout } from "react-icons/tb";
+import { Link } from "react-router";
 
 
 const UserProfile = () => {
@@ -75,7 +76,6 @@ const UserProfile = () => {
           />
           <h3 className="text-xl font-semibold">{user?.displayName || "No Name Set"}</h3>
           <p className="text-gray-600">{user?.email}</p>
-
           <button
             onClick={() => setEditing(true)}
             className="btn btn-secondary mt-4 px-6"

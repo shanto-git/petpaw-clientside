@@ -56,7 +56,7 @@ const AddListing = () => {
             });
           });
         }
-        navigate("/my-listings");
+        navigate("/dashboard/my-listings");
       });
   };
   return (
