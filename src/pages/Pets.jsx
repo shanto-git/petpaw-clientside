@@ -13,7 +13,7 @@ const Pets = () => {
       setFilteredListings(listings); // show all if search is empty
     } else {
       const filtered = listings.filter((listing) =>
-        listing.name.toLowerCase().includes(searchTerm.toLowerCase())
+        listing.name.toLowerCase().includes(searchTerm.toLowerCase()),
       );
       setFilteredListings(filtered);
     }
@@ -52,7 +52,12 @@ const Pets = () => {
     }
   };
 
-  if (loading) return <p className="flex flex-col items-center text-center py-16">Loading listings...<progress className="progress w-56"></progress></p>;
+  if (loading)
+    return (
+      <p className="flex flex-col items-center text-center py-16">
+        Loading listings...<progress className="progress w-56"></progress>
+      </p>
+    );
 
   return (
     <div className="py-12 px-4 md:px-10 lg:px-20">

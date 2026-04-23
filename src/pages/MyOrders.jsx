@@ -11,7 +11,7 @@ const MyOrders = () => {
     if (!email) return;
 
     axios
-      .get(`http://localhost:5000/orders?email=${email}`)
+      .get(`https://backend10-phi.vercel.app/orders?email=${email}`)
       .then((res) => {
         setOrders(res.data);
       })

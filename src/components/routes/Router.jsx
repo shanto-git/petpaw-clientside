@@ -60,7 +60,7 @@ const router = createBrowserRouter([
     ],
   },
 
-  // --- ড্যাশবোর্ড রুটস (Nested Routing) ---
+  // (Nested Routing)
   {
     path: "/dashboard",
     element: (

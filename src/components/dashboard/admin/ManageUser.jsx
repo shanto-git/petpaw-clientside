@@ -6,26 +6,26 @@ const ManageUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // লোকালহোস্ট ইউআরএল
-  const baseUrl = "http://localhost:5000";
+  const baseUrl = "https://backend10-phi.vercel.app";
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
   const fetchUsers = () => {
-    axios.get(`${baseUrl}/all-users`)
-      .then(res => {
+    axios
+      .get(`${baseUrl}/all-users`)
+      .then((res) => {
         setUsers(res.data);
         setLoading(false);
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
   };
 
-  // রোল পরিবর্তন করার ফাংশন (Buyer <-> Seller)
   const handleRoleChange = (id, newRole) => {
-    axios.patch(`${baseUrl}/users/admin/${id}`, { role: newRole })
-      .then(res => {
+    axios
+      .patch(`${baseUrl}/users/admin/${id}`, { role: newRole })
+      .then((res) => {
         if (res.data.modifiedCount > 0) {
           Swal.fire("Success!", `User is now a ${newRole}`, "success");
           fetchUsers();
@@ -33,11 +33,11 @@ const ManageUsers = () => {
       });
   };
 
-  // ইউজার ব্লক/আনব্লক সিস্টেম
   const handleStatusChange = (id, currentStatus) => {
     const newStatus = currentStatus === "blocked" ? "active" : "blocked";
-    axios.patch(`${baseUrl}/users/admin/${id}`, { status: newStatus })
-      .then(res => {
+    axios
+      .patch(`${baseUrl}/users/admin/${id}`, { status: newStatus })
+      .then((res) => {
         if (res.data.modifiedCount > 0) {
           Swal.fire("Updated!", `User has been ${newStatus}`, "success");
           fetchUsers();
@@ -45,7 +45,6 @@ const ManageUsers = () => {
       });
   };
 
-  // ইউজার ডিলিট
   const handleDeleteUser = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -56,13 +55,12 @@ const ManageUsers = () => {
       confirmButtonText: "Yes, delete!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`${baseUrl}/users/${id}`)
-          .then(res => {
-            if (res.data.deletedCount > 0) {
-              Swal.fire("Deleted!", "User removed successfully", "success");
-              fetchUsers();
-            }
-          });
+        axios.delete(`${baseUrl}/users/${id}`).then((res) => {
+          if (res.data.deletedCount > 0) {
+            Swal.fire("Deleted!", "User removed successfully", "success");
+            fetchUsers();
+          }
+        });
       }
     });
   };
@@ -71,7 +69,9 @@ const ManageUsers = () => {
 
   return (
     <div className="overflow-x-auto p-4 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">All Users</h2>
+      <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">
+        All Users
+      </h2>
       <table className="table w-full">
         <thead className="bg-gray-100">
           <tr>
@@ -91,24 +91,27 @@ const ManageUsers = () => {
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>
-                <span className={`badge ${user.role === "admin" ? "badge-error" : user.role === "seller" ? "badge-info" : "badge-ghost"}`}>
+                <span
+                  className={`badge ${user.role === "admin" ? "badge-error" : user.role === "seller" ? "badge-info" : "badge-ghost"}`}
+                >
                   {user.role}
                 </span>
               </td>
               <td>
-
                 {user.role === "admin" ? (
-                  <button className="btn btn-xs btn-disabled">Not Permitted</button>
+                  <button className="btn btn-xs btn-disabled">
+                    Not Permitted
+                  </button>
                 ) : user.role === "buyer" ? (
-                  <button 
-                    onClick={() => handleRoleChange(user._id, "seller")} 
+                  <button
+                    onClick={() => handleRoleChange(user._id, "seller")}
                     className="btn btn-xs btn-outline btn-info"
                   >
                     Make Seller
                   </button>
                 ) : (
-                  <button 
-                    onClick={() => handleRoleChange(user._id, "buyer")} 
+                  <button
+                    onClick={() => handleRoleChange(user._id, "buyer")}
                     className="btn btn-xs btn-outline btn-warning"
                   >
                     Make Buyer
@@ -116,29 +119,32 @@ const ManageUsers = () => {
                 )}
               </td>
               <td>
-                <span className={`badge ${user.status === "blocked" ? "badge-error" : "badge-success"}`}>
+                <span
+                  className={`badge ${user.status === "blocked" ? "badge-error" : "badge-success"}`}
+                >
                   {user.status || "active"}
                 </span>
               </td>
               <td className="flex gap-2">
-
                 {user.role !== "admin" ? (
                   <>
-                    <button 
-                      onClick={() => handleStatusChange(user._id, user.status)} 
+                    <button
+                      onClick={() => handleStatusChange(user._id, user.status)}
                       className={`btn btn-xs ${user.status === "blocked" ? "btn-success" : "btn-warning"}`}
                     >
                       {user.status === "blocked" ? "Unblock" : "Block"}
                     </button>
-                    <button 
-                      onClick={() => handleDeleteUser(user._id)} 
+                    <button
+                      onClick={() => handleDeleteUser(user._id)}
                       className="btn btn-xs btn-error"
                     >
                       Delete
                     </button>
                   </>
                 ) : (
-                  <span className="text-xs text-gray-400 italic">Protected</span>
+                  <span className="text-xs text-gray-400 italic">
+                    Protected
+                  </span>
                 )}
               </td>
             </tr>

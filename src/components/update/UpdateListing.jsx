@@ -9,11 +9,12 @@ const UpdateListing = () => {
   const { id } = useParams();
   const [listing, setListing] = useState({});
   const navigate = useNavigate();
-  const baseUrl = "http://localhost:5000";
+  const baseUrl = "https://backend10-phi.vercel.app";
 
   useEffect(() => {
     if (id) {
-      axios.get(`${baseUrl}/listing/${id}`)
+      axios
+        .get(`${baseUrl}/listing/${id}`)
         .then((res) => {
           setListing(res.data);
         })
@@ -38,23 +39,29 @@ const UpdateListing = () => {
       email: user?.email,
     };
 
-    axios.put(`${baseUrl}/listing/${id}`, formData)
+    axios
+      .put(`${baseUrl}/listing/${id}`, formData)
       .then((res) => {
         if (res.data.modifiedCount > 0) {
           Swal.fire({
             title: "Success!",
             text: "Listing Updated Successfully",
             icon: "success",
-            confirmButtonText: "Ok"
+            confirmButtonText: "Ok",
           });
           navigate("/dashboard/my-listings");
         }
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
   };
 
   if (!listing._id) {
-    return <div className="text-center mt-10"><p>Loading Data...</p><progress className="progress w-56"></progress></div>;
+    return (
+      <div className="text-center mt-10">
+        <p>Loading Data...</p>
+        <progress className="progress w-56"></progress>
+      </div>
+    );
   }
 
   return (

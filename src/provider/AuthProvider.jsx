@@ -17,15 +17,25 @@ const googleProvider = new GoogleAuthProvider();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [role, setRole] = useState(null); 
+  const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const baseUrl = "http://localhost:5000";
+  const baseUrl = "https://backend10-phi.vercel.app";
 
-  const createUser = async (email, password, name, photo, userRole = "buyer") => {
+  const createUser = async (
+    email,
+    password,
+    name,
+    photo,
+    userRole = "buyer",
+  ) => {
     setLoading(true);
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
       const newUser = userCredential.user;
       await updateProfile(newUser, { displayName: name, photoURL: photo });
 
@@ -92,7 +102,7 @@ const AuthProvider = ({ children }) => {
       if (currentUser?.email) {
         try {
           const response = await fetch(`${baseUrl}/users/${currentUser.email}`);
-          
+
           if (response.ok) {
             const data = await response.json();
             setRole(data?.role || "buyer");
@@ -115,7 +125,7 @@ const AuthProvider = ({ children }) => {
     user,
     role,
     loading,
-    setLoading, 
+    setLoading,
     createUser,
     signIn,
     signInWithGoogle,

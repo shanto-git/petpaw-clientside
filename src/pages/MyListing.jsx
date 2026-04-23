@@ -9,7 +9,7 @@ const MyListing = () => {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/my-listings?email=${user?.email}`)
+    fetch(`https://backend10-phi.vercel.app/my-listings?email=${user?.email}`)
       .then((res) => res.json())
       .then((data) => {
         setMyListings(data);
@@ -32,12 +32,12 @@ const MyListing = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:5000/listing/${id}`)
+          .delete(`https://backend10-phi.vercel.app/listing/${id}`)
           .then((res) => {
             console.log(res.data);
             if (res.data.deletedCount == 1) {
               const filterData = myListings.filter(
-                (listing) => listing._id != id
+                (listing) => listing._id != id,
               );
               setMyListings(filterData);
               Swal.fire({
@@ -57,7 +57,7 @@ const MyListing = () => {
           <tbody>
             {/* row 1 */}
             {myListings.map((listing) => (
-              <tr>
+              <tr key={listing._id}>
                 <td>
                   <div className="flex items-center gap-3">
                     <div className="avatar">

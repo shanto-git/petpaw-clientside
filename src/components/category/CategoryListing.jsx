@@ -20,7 +20,12 @@ const CategoryListings = () => {
       });
   }, [category]);
 
-  if (loading) return <p className="flex flex-col items-center text-center py-10">Loading...<progress className="progress w-56"></progress></p>;
+  if (loading)
+    return (
+      <p className="flex flex-col items-center text-center py-10">
+        Loading...<progress className="progress w-56"></progress>
+      </p>
+    );
   if (listings.length === 0)
     return (
       <p className="text-center py-10 text-gray-500">
